@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFK G2016 - Troppsoversikt</title>
+    <style>
+        :root {
+            --mfk-blue: #00529b;
+            --mfk-white: #ffffff;
+            --no-number-yellow: #ffd700;
+        }
+
+        body {
+            font-family: 'Arial Black', sans-serif;
+            background: #2e7d32; /* Gressfarge */
+            background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 40px;
+            gap: 25px;
+            margin: 0;
+        }
+
+        h1 {
+            width: 100%;
+            text-align: center;
+            color: white;
+            text-shadow: 3px 3px 0px #000;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+        }
+
+        .player-card {
+            width: 260px;
+            height: 400px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-radius: 15px;
+        }
+
+        .player-card.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            border: 4px solid white;
+            overflow: hidden;
+        }
+
+        /* FORSIDE DESIGN */
+        .card-front {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+        }
+
+        /* Blå drakt */
+        .status-ready { background-color: var(--mfk-blue); }
+        /* Gul drakt for de uten nummer */
+        .status-missing { background-color: var(--no-number-yellow); color: #000 !important; border-color: #000; }
+
+        /* Skulderstriper */
+        .stripes {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 35px;
+        }
+        .stripe-group { display: flex; gap: 4px; }
+        .stripe { width: 6px; height: 45px; background: white; }
+        .status-missing .stripe { background: #000; }
+
+        .collar {
+            width: 90px;
+            height: 30px;
+            background: white;
+            border-bottom-left-radius: 45px;
+            border-bottom-right-radius: 45px;
+            z-index: 2;
+        }
+        .status-missing .collar { background: #000; }
+
+        .jersey-body {
+            margin-top: 30px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .fname { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 5px; }
+        .number { font-size: 8.5rem; line-height: 1; margin: 10px 0; }
+        .lname { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* BAKSIDE DESIGN */
+        .card-back {
+            background: #f0f0f0;
+            color: #333;
+            transform: rotateY(180deg);
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .card-back h2 { color: var(--mfk-blue); border-bottom: 2px solid var(--mfk-blue); font-size: 1.2rem; }
+        .info-bit { margin: 10px 0; font-size: 0.9rem; }
+        .info-label { font-weight: bold; color: #777; display: block; text-transform: uppercase; font-size: 0.7rem; }
+        .comment-area { background: #ddd; padding: 10px; border-radius: 5px; font-style: italic; flex-grow: 1; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>MFK G2016 Draktliste</h1>
+
+    <div id="grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px;"></div>
+
+    <script>
+        const players = [
+            { f: "Adrian", e: "Austnes-Eliassen", s: "M", n: "23", c: "Fikk først utdelt nr 3. Sjekk hvor den drakten er." },
+            { f: "André", e: "Arbildo-Tverfjell", s: "S", n: "17", c: "Utlevert str. 13/14" },
+            { f: "Anton", e: "Holbø", s: "S", n: "7", c: "Leveres Anita etter påske 13.04.26" },
+            { f: "Aslak", e: "Thomassen", s: "L", n: "8", c: "" },
+            { f: "Daniel", e: "Engelseth", s: "", n: "", c: "" },
+            { f: "Daniel", e: "Kebede", s: "M", n: "95", c: "" },
+            { f: "Elirone", e: "Nkamicaniye", s: "M", n: "", c: "Trenger keeperdrakt S" },
+            { f: "Filip Nathaniel", e: "Bjerkelund-Hustad", s: "S", n: "9", c: "" },
+            { f: "Frosti", e: "Birnisson", s: "L", n: "28", c: "" },
+            { f: "Herman", e: "Larsen Varhaugvik", s: "S", n: "", c: "" },
+            { f: "Isak", e: "Eidslott Virum", s: "S", n: "", c: "" },
+            { f: "Jesper", e: "Post", s: "S", n: "30", c: "" },
+            { f: "Jesper", e: "Stranden Rikstad", s: "L", n: "39", c: "" },
+            { f: "Johannes", e: "Wolff Bringslid", s: "M", n: "13", c: "Utleveres" },
+            { f: "Jonah", e: "Post", s: "S", n: "34", c: "Utlevert" },
+            { f: "Joud", e: "Abdulsamei", s: "S", n: "", c: "Utleveres S etter påske" },
+            { f: "Kasper M", e: "Sylte", s: "M", n: "3", c: "Fått shorts M, men trenger shorts L" },
+            { f: "Kenneth", e: "Weng Kleve", s: "M", n: "22", c: "" },
+            { f: "Kim Stian", e: "Vestad", s: "M", n: "29", c: "" },
+            { f: "Knut", e: "Rød", s: "S", n: "2", c: "" },
+            { f: "Linus", e: "Haukaas-Øverland", s: "S", n: "26", c: "" },
+            { f: "Markus", e: "Heien Vik", s: "S", n: "", c: "" },
+            { f: "Mathias", e: "llestad Håbet", s: "M", n: "21", c: "" },
+            { f: "Mats", e: "Roksvaag Aakvik", s: "?", n: "", c: "Sendt SMS 18.04" },
+            { f: "Ola", e: "Helset Myklebust", s: "M", n: "", c: "" },
+            { f: "Oleander", e: "Sundgot", s: "", n: "", c: "Sendt SMS 18.04" },
+            { f: "Oskar", e: "Veiåker", s: "M", n: "14", c: "" },
+            { f: "Peter", e: "Hovde", s: "XXL", n: "", c: "" },
+            { f: "Sander", e: "Jørgensen", s: "M", n: "1", c: "Utlevert keeperdrakt. Trenger L spilledrakt" },
+            { f: "Sebastian", e: "Vetvik", s: "M", n: "31", c: "Byttet klubb. Må levere drakt tilbake" },
+            { f: "Sondre", e: "Fjærestad Fostervold", s: "S", n: "16", c: "" },
+            { f: "Theo", e: "Grüner Bygland", s: "M", n: "35", c: "" },
+            { f: "Theodor", e: "Haukebø", s: "L", n: "15", c: "Bytte til L etter påske" },
+            { f: "Vegard", e: "Gjerde", s: "M", n: "27", c: "" }
+        ];
+
+        const grid = document.getElementById('grid');
+
+        players.forEach(p => {
+            const hasNumber = p.n !== "";
+            const statusClass = hasNumber ? "status-ready" : "status-missing";
+            const numDisplay = hasNumber ? p.n : "?";
+            
+            const card = document.createElement('div');
+            card.className = 'player-card';
+            card.onclick = () => card.classList.toggle('is-flipped');
+
+            card.innerHTML = `
+                <div class="card-inner">
+                    <div class="card-front ${statusClass}">
+                        <div class="stripes">
+                            <div class="stripe-group"><div class="stripe"></div><div class="stripe"></div><div class="stripe"></div></div>
+                            <div class="stripe-group"><div class="stripe"></div><div class="stripe"></div><div class="stripe"></div></div>
+                        </div>
+                        <div class="collar"></div>
+                        <div class="jersey-body">
+                            <div class="fname">${p.f}</div>
+                            <div class="number">${numDisplay}</div>
+                            <div class="lname">${p.e}</div>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <h2>${p.f} ${p.e}</h2>
+                        <div class="info-bit">
+                            <span class="info-label">Draktstørrelse</span>
+                            <b>${p.s || 'Mangler info'}</b>
+                        </div>
+                        <div class="info-bit">
+                            <span class="info-label">Status</span>
+                            <b>${hasNumber ? 'Drakt utlevert' : 'Venter på nummer'}</b>
+                        </div>
+                        <span class="info-label">Merknader</span>
+                        <div class="comment-area">${p.c || 'Ingen kommentar.'}</div>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>

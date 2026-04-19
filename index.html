@@ -13,9 +13,9 @@
 
         body {
             font-family: 'Arial Black', sans-serif;
-            background: #2e7d32; /* Gressfarge */
-            background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
+            background: #2e7d32; 
+            background-image: linear-gradient(rgba(255,255,255,0.05) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.05) 2px, transparent 2px);
+            background-size: 80px 80px;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
@@ -44,7 +44,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.6s;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             border-radius: 15px;
@@ -72,12 +72,9 @@
             color: white;
         }
 
-        /* Blå drakt */
         .status-ready { background-color: var(--mfk-blue); }
-        /* Gul drakt for de uten nummer */
         .status-missing { background-color: var(--no-number-yellow); color: #000 !important; border-color: #000; }
 
-        /* Skulderstriper */
         .stripes {
             position: absolute;
             top: 0;
@@ -107,12 +104,12 @@
         }
 
         .fname { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 5px; }
-        .number { font-size: 8.5rem; line-height: 1; margin: 10px 0; }
+        .number { font-size: 8.5rem; line-height: 1; margin: 10px 0; font-family: 'Arial Black', sans-serif; }
         .lname { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; }
 
         /* BAKSIDE DESIGN */
         .card-back {
-            background: #f0f0f0;
+            background: #fdfdfd;
             color: #333;
             transform: rotateY(180deg);
             padding: 20px;
@@ -122,10 +119,10 @@
             font-family: 'Arial', sans-serif;
         }
 
-        .card-back h2 { color: var(--mfk-blue); border-bottom: 2px solid var(--mfk-blue); font-size: 1.2rem; }
+        .card-back h2 { color: var(--mfk-blue); border-bottom: 2px solid var(--mfk-blue); font-size: 1.2rem; margin-top: 0; }
         .info-bit { margin: 10px 0; font-size: 0.9rem; }
         .info-label { font-weight: bold; color: #777; display: block; text-transform: uppercase; font-size: 0.7rem; }
-        .comment-area { background: #ddd; padding: 10px; border-radius: 5px; font-style: italic; flex-grow: 1; margin-top: 10px; }
+        .comment-area { background: #eee; padding: 10px; border-radius: 5px; font-style: italic; flex-grow: 1; margin-top: 10px; border-left: 4px solid var(--mfk-blue); }
     </style>
 </head>
 <body>
@@ -138,18 +135,18 @@
         const players = [
             { f: "Adrian", e: "Austnes-Eliassen", s: "M", n: "23", c: "Fikk først utdelt nr 3. Sjekk hvor den drakten er." },
             { f: "André", e: "Arbildo-Tverfjell", s: "S", n: "17", c: "Utlevert str. 13/14" },
-            { f: "Anton", e: "Holbø", s: "S", n: "7", c: "Leveres Anita etter påske 13.04.26" },
+            { f: "Anton", e: "Holbø", s: "S", n: "7", c: "" },
             { f: "Aslak", e: "Thomassen", s: "L", n: "8", c: "" },
             { f: "Daniel", e: "Kebede", s: "M", n: "95", c: "" },
-            { f: "Elirone", e: "Nkamicaniye", s: "M", n: "", c: "Trenger keeperdrakt S" },
+            { f: "Elirone", e: "Nkamicaniye", s: "M", n: "19", c: "Mangler shorts str. M" },
             { f: "Filip Nathaniel", e: "Bjerkelund-Hustad", s: "S", n: "9", c: "" },
             { f: "Frosti", e: "Birnisson", s: "L", n: "28", c: "" },
-            { f: "Herman", e: "Larsen Varhaugvik", s: "S", n: "", c: "" },
-            { f: "Isak", e: "Eidslott Virum", s: "S", n: "", c: "" },
-            { f: "Jesper", e: "Post", s: "S", n: "30", c: "" },
+            { f: "Herman", e: "Larsen Varhaugvik", s: "S", n: "", c: "Leveres Anita" },
+            { f: "Isak", e: "Eidslott Virum", s: "S", n: "", c: "Utleveres etter påske" },
+            { f: "Jesper", e: "Post", s: "S", n: "30", c: "Utlevert 13.04.26" },
             { f: "Jesper", e: "Stranden Rikstad", s: "L", n: "39", c: "" },
-            { f: "Johannes", e: "Wolff Bringslid", s: "M", n: "13", c: "Utleveres" },
-            { f: "Jonah", e: "Post", s: "S", n: "34", c: "Utlevert" },
+            { f: "Johannes", e: "Wolff Bringslid", s: "M", n: "13", c: "" },
+            { f: "Jonah", e: "Post", s: "S", n: "34", c: "Trenger keeperdrakt S" },
             { f: "Joud", e: "Abdulsamei", s: "S", n: "", c: "Utleveres S etter påske" },
             { f: "Kasper M", e: "Sylte", s: "M", n: "3", c: "Fått shorts M, men trenger shorts L" },
             { f: "Kenneth", e: "Weng Kleve", s: "M", n: "22", c: "" },
@@ -157,17 +154,17 @@
             { f: "Knut", e: "Rød", s: "S", n: "2", c: "" },
             { f: "Linus", e: "Haukaas-Øverland", s: "S", n: "26", c: "" },
             { f: "Markus", e: "Heien Vik", s: "S", n: "", c: "" },
-            { f: "Mathias", e: "Ilestad Håbet", s: "M", n: "21", c: "" },
+            { f: "Mathias", e: "llestad Håbet", s: "M", n: "21", c: "" },
             { f: "Mats", e: "Roksvaag Aakvik", s: "?", n: "", c: "Sendt SMS 18.04" },
             { f: "Ola", e: "Helset Myklebust", s: "M", n: "", c: "" },
             { f: "Oleander", e: "Sundgot", s: "", n: "", c: "Sendt SMS 18.04" },
             { f: "Oskar", e: "Veiåker", s: "M", n: "14", c: "" },
             { f: "Peter", e: "Hovde", s: "XXL", n: "", c: "" },
-            { f: "Sander", e: "Jørgensen", s: "M", n: "1", c: "Utlevert keeperdrakt. Trenger L spilledrakt" },
+            { f: "Sander", e: "Jørgensen", s: "M", n: "1", c: "Utlevert keeperdrakt, ikke spilledrakt. Trenger L spilledrakt" },
             { f: "Sebastian", e: "Vetvik", s: "M", n: "31", c: "Byttet klubb. Må levere drakt tilbake" },
             { f: "Sondre", e: "Fjærestad Fostervold", s: "S", n: "16", c: "" },
             { f: "Theo", e: "Grüner Bygland", s: "M", n: "35", c: "" },
-            { f: "Theodor", e: "Haukebø", s: "L", n: "15", c: "Bytte til L etter påske" },
+            { f: "Theodor", e: "Haukebø", s: "L", n: "15", c: "Foreløpig M. Vil bytte til L etter påskeferien" },
             { f: "Vegard", e: "Gjerde", s: "M", n: "27", c: "" }
         ];
 
@@ -204,10 +201,10 @@
                         </div>
                         <div class="info-bit">
                             <span class="info-label">Status</span>
-                            <b>${hasNumber ? 'Drakt utlevert' : 'Venter på nummer'}</b>
+                            <b>${hasNumber ? 'Drakt utlevert (#' + p.n + ')' : 'Venter på draktnummer'}</b>
                         </div>
                         <span class="info-label">Merknader</span>
-                        <div class="comment-area">${p.c || 'Ingen kommentar.'}</div>
+                        <div class="comment-area">${p.c || 'Ingen merknader registrert.'}</div>
                     </div>
                 </div>
             `;

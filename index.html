@@ -104,7 +104,15 @@
 
         .fname { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 5px; }
         .number { font-size: 8.5rem; line-height: 1; margin: 10px 0; font-family: 'Arial Black', sans-serif; }
-        .lname { font-size: 1.3rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Spesifikk styling for etternavn for å skille I og L */
+        .lname { 
+            font-size: 1.2rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            font-family: 'Verdana', sans-serif; /* Bytter font her for bedre lesbarhet av I vs L */
+            font-weight: bold;
+        }
 
         .card-back {
             background: #fdfdfd;
@@ -152,7 +160,7 @@
             { f: "Knut", e: "Rød", s: "S", n: "2", c: "" },
             { f: "Linus", e: "Haukaas-Øverland", s: "S", n: "26", c: "" },
             { f: "Markus", e: "Heien Vik", s: "S", n: "", c: "" },
-            { f: "Mathias", e: "llestad Håbet", s: "M", n: "21", c: "" },
+            { f: "Mathias", e: "Ilestad Håbet", s: "M", n: "21", c: "" },
             { f: "Mats", e: "Roksvaag Aakvik", s: "?", n: "", c: "Sendt SMS 18.04" },
             { f: "Ola", e: "Helset Myklebust", s: "M", n: "20", c: "" },
             { f: "Oleander", e: "Sundgot", s: "", n: "", c: "Sendt SMS 18.04" },

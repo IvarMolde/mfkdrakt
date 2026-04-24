@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MFK G2016 - Troppsoversikt</title>
+    <title>MFK G2016 - Troppsoversikt 24. April (V2)</title>
     <style>
         :root {
             --mfk-blue: #00529b;
             --mfk-white: #ffffff;
-            --no-number-yellow: #ffd700;
         }
 
         body {
@@ -69,10 +68,8 @@
             flex-direction: column;
             align-items: center;
             color: white;
+            background-color: var(--mfk-blue);
         }
-
-        .status-ready { background-color: var(--mfk-blue); }
-        .status-missing { background-color: var(--no-number-yellow); color: #000 !important; border-color: #000; }
 
         .stripes {
             position: absolute;
@@ -84,7 +81,6 @@
         }
         .stripe-group { display: flex; gap: 4px; }
         .stripe { width: 6px; height: 45px; background: white; }
-        .status-missing .stripe { background: #000; }
 
         .collar {
             width: 90px;
@@ -94,7 +90,6 @@
             border-bottom-right-radius: 45px;
             z-index: 2;
         }
-        .status-missing .collar { background: #000; }
 
         .jersey-body {
             margin-top: 30px;
@@ -102,16 +97,16 @@
             width: 100%;
         }
 
-        .fname { font-size: 1.5rem; text-transform: uppercase; margin-bottom: 5px; }
-        .number { font-size: 8.5rem; line-height: 1; margin: 10px 0; font-family: 'Arial Black', sans-serif; }
+        .fname { font-size: 1.4rem; text-transform: uppercase; margin-bottom: 5px; padding: 0 10px; }
+        .number { font-size: 8rem; line-height: 1; margin: 10px 0; font-family: 'Arial Black', sans-serif; }
         
-        /* Spesifikk styling for etternavn for å skille I og L */
         .lname { 
-            font-size: 1.2rem; 
+            font-size: 1.1rem; 
             text-transform: uppercase; 
-            letter-spacing: 2px; 
-            font-family: 'Verdana', sans-serif; /* Bytter font her for bedre lesbarhet av I vs L */
+            letter-spacing: 1.5px; 
+            font-family: 'Verdana', sans-serif;
             font-weight: bold;
+            padding: 0 10px;
         }
 
         .card-back {
@@ -128,66 +123,62 @@
         .card-back h2 { color: var(--mfk-blue); border-bottom: 2px solid var(--mfk-blue); font-size: 1.2rem; margin-top: 0; }
         .info-bit { margin: 10px 0; font-size: 0.9rem; }
         .info-label { font-weight: bold; color: #777; display: block; text-transform: uppercase; font-size: 0.7rem; }
-        .comment-area { background: #eee; padding: 10px; border-radius: 5px; font-style: italic; flex-grow: 1; margin-top: 10px; border-left: 4px solid var(--mfk-blue); }
     </style>
 </head>
 <body>
 
-    <h1>MFK G2016 Draktliste</h1>
+    <h1>MFK G2016 Troppsoversikt</h1>
 
     <div id="grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 25px;"></div>
 
     <script>
         const players = [
-            { f: "Adrian", e: "Austnes-Eliassen", s: "M", n: "23", c: "" },
-            { f: "André", e: "Arbildo-Tverfjell", s: "S", n: "17", c: "Utlevert str. 13/14" },
-            { f: "Anton", e: "Holbø", s: "S", n: "7", c: "Leveres Anita" },
-            { f: "Aslak", e: "Thomassen", s: "L", n: "8", c: "" },
-            { f: "Daniel", e: "Kebede", s: "M", n: "95", c: "" },
-            { f: "Elirone", e: "Nkamicaniye", s: "M", n: "19", c: "Mangler shorts str. M" },
-            { f: "Filip Nathaniel", e: "Bjerkelund-Hustad", s: "S", n: "9", c: "" },
-            { f: "Frosti", e: "Birnisson", s: "L", n: "28", c: "" },
-            { f: "Herman", e: "Larsen Varhaugvik", s: "S", n: "11", c: "Utlevert draktnummer 11" },
-            { f: "Isak", e: "Eidslott Virum", s: "S", n: "", c: "Utleveres etter påske" },
-            { f: "Jesper", e: "Post", s: "S", n: "30", c: "" },
-            { f: "Jesper", e: "Stranden Rikstad", s: "L", n: "39", c: "" },
-            { f: "Johannes", e: "Wolff Bringslid", s: "M", n: "13", c: "" },
-            { f: "Jonah", e: "Post", s: "S", n: "34", c: "Trenger keeperdrakt S" },
-            { f: "Joud", e: "Abdulsamei", s: "S", n: "", c: "Utleveres S etter påske" },
-            { f: "Kasper M", e: "Sylte", s: "M", n: "3", c: "Fått shorts M, trenger shorts L" },
-            { f: "Kenneth", e: "Weng Kleve", s: "M", n: "22", c: "" },
-            { f: "Kim Stian", e: "Vestad", s: "M", n: "29", c: "" },
-            { f: "Knut", e: "Rød", s: "S", n: "2", c: "" },
-            { f: "Linus", e: "Haukaas-Øverland", s: "S", n: "26", c: "" },
-            { f: "Markus", e: "Heien Vik", s: "S", n: "", c: "" },
-            { f: "Mathias", e: "Ilestad Håbet", s: "M", n: "21", c: "" },
-            { f: "Mats", e: "Roksvaag Aakvik", s: "?", n: "", c: "Sendt SMS 18.04" },
-            { f: "Ola", e: "Helset Myklebust", s: "M", n: "20", c: "" },
-            { f: "Oleander", e: "Sundgot", s: "", n: "", c: "Sendt SMS 18.04" },
-            { f: "Oskar", e: "Veiåker", s: "M", n: "14", c: "" },
-            { f: "Peter", e: "Hovde", s: "XXL", n: "", c: "" },
-            { f: "Sander", e: "Jørgensen", s: "M", n: "1", c: "Trenger L spilledrakt" },
-            { f: "Sebastian", e: "Vetvik", s: "M", n: "31", c: "Må levere drakt tilbake" },
-            { f: "Sondre", e: "Fjærestad Fostervold", s: "S", n: "16", c: "" },
-            { f: "Theo", e: "Grüner Bygland", s: "M", n: "35", c: "" },
-            { f: "Theodor", e: "Haukebø", s: "L", n: "15", c: "Bytte til L etter påske" },
-            { f: "Vegard", e: "Gjerde", s: "M", n: "27", c: "" }
+            { f: "Adrian", e: "Austnes-Eliassen", s: "M", n: "23" },
+            { f: "André", e: "Arbildo-Tverfjell", s: "S", n: "17" },
+            { f: "Anton", e: "Holbø", s: "S", n: "7" },
+            { f: "Aslak", e: "Thomassen", s: "L", n: "8" },
+            { f: "Daniel", e: "Kebede", s: "M", n: "95" },
+            { f: "Elirone", e: "Nkamicaniye", s: "M", n: "19" },
+            { f: "Filip Nathaniel", e: "Bjerkelund-Hustad", s: "S", n: "9" },
+            { f: "Frosti", e: "Birnisson", s: "L", n: "28" },
+            { f: "Herman", e: "Larsen Varhaugvik", s: "S", n: "11" },
+            { f: "Isak", e: "Eidslott Virum", s: "S", n: "46" },
+            { f: "Jesper", e: "Post", s: "S", n: "30" },
+            { f: "Jesper", e: "Stranden Rikstad", s: "L", n: "39" },
+            { f: "Johannes", e: "Wolff Bringslid", s: "M", n: "13" },
+            { f: "Jonah", e: "Post (keeper)", s: "S", n: "12" },
+            { f: "Jonah", e: "Post", s: "S", n: "34" },
+            { f: "Joud", e: "Abdulsamei", s: "S", n: "55" },
+            { f: "Kasper M", e: "Sylte", s: "M", n: "3" },
+            { f: "Kenneth", e: "Weng Kleve", s: "M", n: "22" },
+            { f: "Kim Stian", e: "Vestad", s: "M", n: "29" },
+            { f: "Knut", e: "Rød", s: "S", n: "2" },
+            { f: "Linus", e: "Haukaas-Øverland", s: "S", n: "26" },
+            { f: "Markus", e: "Heien Vik", s: "S", n: "37" },
+            { f: "Mathias", e: "Ilestad Håbet", s: "M", n: "21" },
+            { f: "Mats", e: "Roksvaag Aakvik", s: "S", n: "52" },
+            { f: "Ola", e: "Helset Myklebust", s: "M", n: "20" },
+            { f: "Oleander", e: "Sundgot", s: "S", n: "49" },
+            { f: "Oskar", e: "Veiåker", s: "M", n: "14" },
+            { f: "Peter", e: "Hovde", s: "XXL", n: "30" },
+            { f: "Sander", e: "Jørgensen", s: "M", n: "1" },
+            { f: "Sander", e: "Jørgensen (utespiller)", s: "L", n: "?" },
+            { f: "Sondre", e: "Fjærestad Fostervold", s: "S", n: "16" },
+            { f: "Theo", e: "Grüner Bygland", s: "M", n: "35" },
+            { f: "Theodor", e: "Haukebø", s: "L", n: "54" },
+            { f: "Vegard", e: "Gjerde", s: "M", n: "27" }
         ];
 
         const grid = document.getElementById('grid');
 
         players.forEach(p => {
-            const hasNumber = p.n !== "";
-            const statusClass = hasNumber ? "status-ready" : "status-missing";
-            const numDisplay = hasNumber ? p.n : "?";
-            
             const card = document.createElement('div');
             card.className = 'player-card';
             card.onclick = () => card.classList.toggle('is-flipped');
 
             card.innerHTML = `
                 <div class="card-inner">
-                    <div class="card-front ${statusClass}">
+                    <div class="card-front">
                         <div class="stripes">
                             <div class="stripe-group"><div class="stripe"></div><div class="stripe"></div><div class="stripe"></div></div>
                             <div class="stripe-group"><div class="stripe"></div><div class="stripe"></div><div class="stripe"></div></div>
@@ -195,7 +186,7 @@
                         <div class="collar"></div>
                         <div class="jersey-body">
                             <div class="fname">${p.f}</div>
-                            <div class="number">${numDisplay}</div>
+                            <div class="number">${p.n}</div>
                             <div class="lname">${p.e}</div>
                         </div>
                     </div>
@@ -203,14 +194,12 @@
                         <h2>${p.f} ${p.e}</h2>
                         <div class="info-bit">
                             <span class="info-label">Draktstørrelse</span>
-                            <b>${p.s || 'Mangler info'}</b>
+                            <b>${p.s}</b>
                         </div>
                         <div class="info-bit">
                             <span class="info-label">Status</span>
-                            <b>${hasNumber ? 'Drakt utlevert (#' + p.n + ')' : 'Venter på draktnummer'}</b>
+                            <b>${p.n !== "?" ? "Drakt utlevert (#" + p.n + ")" : "Venter på nummer"}</b>
                         </div>
-                        <span class="info-label">Merknader</span>
-                        <div class="comment-area">${p.c || 'Ingen merknader.'}</div>
                     </div>
                 </div>
             `;

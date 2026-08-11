@@ -209,7 +209,7 @@
                             <div class="fname">${p.f}</div>
                             <div class="number">${p.n}</div>
                             <div class="lname">${p.e}</div>
-                            ${p.role ? `<div class="role-badge">${p.role}</div>` : ''}
+                            ${p.role && p.role !== 'UTESPILLER' ? `<div class="role-badge">${p.role}</div>` : ''}
                         </div>
                     </div>
                     <div class="card-back">
